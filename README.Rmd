@@ -15,6 +15,24 @@ library(cppTools)
 
 The Amino Acids Frequency can be calculated using the alpha_count function.
 
+```{r}
+system.time(
+dfExAAsForHuman <- alpha_count(r"(GCF_000001405.40_GRCh38.p14_protein.faa)",
+            seq_min = 100, 
+            seq_max = 2000,
+            verbose = F, simple = F
+            )
+)
+
+```
+
+```{r}
+dfExAAsForHuman |> 
+        d=>d[order(-d$alpha), ] |> 
+        knitr::kable()
+```
+
+
 This function can yield the same results as the following code but in a faster and more convenient manner.
 
 ```{bash}
@@ -22,17 +40,7 @@ time seqkit.exe seq -g -j 12 -s -m 100 -M 2000 'GCF_000001405.40_GRCh38.p14_prot
 ```
 
 
-```{r}
-system.time(
-alpha_count(r"(GCF_000001405.40_GRCh38.p14_protein.faa)",
-            seq_min = 100, 
-            seq_max = 2000,
-            verbose = F, simple = F
-            ) |> 
-        d=>d[order(-d$alpha), ] |> 
-        knitr::kable()
-)
-```
+
 
 Through comparative analysis, we observed that the differences in results are not substantial when removing proteins with lengths greater than 2000, greater than 3000, less than 100 or greater than 2000, and less than 100 or greater than 3000 (see the table below).
 

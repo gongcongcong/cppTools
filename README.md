@@ -10,6 +10,48 @@ library(cppTools)
 The Amino Acids Frequency can be calculated using the alpha_count
 function.
 
+``` r
+system.time(
+dfExAAsForHuman <- alpha_count(r"(GCF_000001405.40_GRCh38.p14_protein.faa)",
+            seq_min = 100, 
+            seq_max = 2000,
+            verbose = F, simple = F
+            )
+)
+```
+
+    ## 用户 系统 流逝 
+    ## 0.44 0.06 0.50
+
+``` r
+dfExAAsForHuman |> 
+        d=>d[order(-d$alpha), ] |> 
+        knitr::kable()
+```
+
+|     |   alpha |      prop |
+|:----|--------:|----------:|
+| L   | 7307961 | 0.0974214 |
+| S   | 6452376 | 0.0860157 |
+| E   | 5457680 | 0.0727556 |
+| A   | 5094653 | 0.0679161 |
+| P   | 4818021 | 0.0642284 |
+| G   | 4768358 | 0.0635663 |
+| K   | 4476315 | 0.0596731 |
+| V   | 4379135 | 0.0583776 |
+| R   | 4251417 | 0.0566750 |
+| T   | 4003422 | 0.0533691 |
+| Q   | 3696682 | 0.0492799 |
+| D   | 3613867 | 0.0481760 |
+| I   | 3221094 | 0.0429400 |
+| N   | 2767234 | 0.0368896 |
+| F   | 2628834 | 0.0350446 |
+| H   | 2017248 | 0.0268916 |
+| Y   | 1937792 | 0.0258324 |
+| C   | 1629506 | 0.0217227 |
+| M   | 1625035 | 0.0216631 |
+| W   |  867289 | 0.0115617 |
+
 This function can yield the same results as the following code but in a
 faster and more convenient manner.
 
@@ -40,24 +82,9 @@ time seqkit.exe seq -g -j 12 -s -m 100 -M 2000 'GCF_000001405.40_GRCh38.p14_prot
     ## U:79
     ## X:26
     ## 
-    ## real 0m33.706s
-    ## user 0m33.234s
-    ## sys  0m0.077s
-
-``` r
-system.time(
-alpha_count(r"(GCF_000001405.40_GRCh38.p14_protein.faa)",
-            seq_min = 100, 
-            seq_max = 2000,
-            verbose = F, simple = F
-            ) |> 
-        d=>d[order(-d$alpha), ] |> 
-        knitr::kable()
-)
-```
-
-    ## 用户 系统 流逝 
-    ## 0.44 0.07 0.50
+    ## real 0m33.233s
+    ## user 0m33.046s
+    ## sys  0m0.108s
 
 Through comparative analysis, we observed that the differences in
 results are not substantial when removing proteins with lengths greater
