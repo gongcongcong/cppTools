@@ -10,8 +10,8 @@ library(cppTools)
 The Amino Acids Frequency can be calculated using the alpha_count
 function.
 
-This function can get the samle result with following code, but more
-quick and convinent.
+This function can yield the same results as the following code but in a
+faster and more convenient manner.
 
 ``` bash
 time seqkit.exe seq -g -j 12 -s -m 100 -M 2000 'GCF_000001405.40_GRCh38.p14_protein.faa'|perl -lne 'foreach(split //){$count{$_}++ if /\w/;} END {print "$_:$count{$_}" for sort {$count{$b} <=> $count{$a}} keys %count;}'
@@ -40,9 +40,9 @@ time seqkit.exe seq -g -j 12 -s -m 100 -M 2000 'GCF_000001405.40_GRCh38.p14_prot
     ## U:79
     ## X:26
     ## 
-    ## real 0m33.102s
-    ## user 0m32.983s
-    ## sys  0m0.062s
+    ## real 0m33.706s
+    ## user 0m33.234s
+    ## sys  0m0.077s
 
 ``` r
 system.time(
@@ -57,7 +57,7 @@ alpha_count(r"(GCF_000001405.40_GRCh38.p14_protein.faa)",
 ```
 
     ## 用户 系统 流逝 
-    ## 0.45 0.05 0.50
+    ## 0.44 0.07 0.50
 
 Through comparative analysis, we observed that the differences in
 results are not substantial when removing proteins with lengths greater
