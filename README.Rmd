@@ -1,0 +1,46 @@
+---
+title: "Calculate the alpha frequency from a fasta file"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Calculate the Amino Acids Frequency From the Human Protein Sequence
+
+```{r cars}
+library(cppTools)
+```
+
+The Amino Acids Frequency can be calculated using the alpha_count function.
+
+```{r}
+alpha_count(r"(E:\WPS_cloud\WPS云盘\myfiles\database\human\GCF_000001405.40_GRCh38.p14_protein.faa)",
+            seq_min = 100, 
+            seq_max = 2000,
+            verbose = F, simple = F
+            ) |> 
+        knitr::kable()
+```
+
+Through comparative analysis, we observed that the differences in results are not substantial when removing proteins with lengths greater than 2000, greater than 3000, less than 100 or greater than 2000, and less than 100 or greater than 3000 (see the table below).
+
+```{r}
+vecSeqMin <- c(100, 100, 0, 0)
+vecSeqMax <- c(3000, 2000, 2000, 3000)
+vecDFNames <- paste0("min_", vecSeqMin, "-max_", vecSeqMax)
+dfAAsFreq <- purrr::pmap(list(vecSeqMin, vecSeqMax), \(.x, .y) {
+        alpha_count(r"(E:\WPS_cloud\WPS云盘\myfiles\database\human\GCF_000001405.40_GRCh38.p14_protein.faa)",
+            seq_min = .x, 
+            seq_max = .y,
+            verbose = F, simple = F
+            )$prop |> 
+        d=>d*100 
+}) |> as.data.frame() |> 
+        `names<-`(vecDFNames)
+rownames(dfAAsFreq) <- cppTools:::.vecAminoAcids
+dfAAsFreq[order(-dfAAsFreq$`min_100-max_2000`), ] |> 
+        knitr::kable(caption = "Table. ExAAs for Humans (GRCh38) Based on Various Sequence Length Cutoff Thresholds")
+```
+

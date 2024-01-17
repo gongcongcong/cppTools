@@ -1,0 +1,14 @@
+Package: cppTools
+Type: Package
+Title: What the Package Does in One 'Title Case' Line
+Version: 0.0.1
+Date: 2023-11-30
+Author: Congcong Gong
+Maintainer: Congcong Gong <congconggong@email.com>
+Description: self scripts.
+License: GPL (>= 2)
+RoxygenNote: 7.2.3
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
+Encoding: UTF-8
