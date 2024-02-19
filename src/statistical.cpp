@@ -1,7 +1,7 @@
 #include <Rinternals.h>
+#include "utils.h"
 #include <R.h>
 #include <stdio.h>
-#include "utils.h"
 #include <string.h>
 #define R_NO_REMAP
 
@@ -14,11 +14,13 @@ extern "C" SEXP R_shoelace(SEXP x, SEXP y)
     int n = Rf_length(x);
     if (n != Rf_length(y)) {
         Rf_error("'x' and 'y' must have the same length");
-    } 
+        return R_NilValue;
+    }
     double ret = 0;
     for (int i = 0; i < n - 1; i++) {
         ret += REAL(x)[i] *  REAL(y)[i + 1] -   REAL(y)[i] * REAL(x)[i + 1];
     }
+    ret += REAL(x)[n - 1] * REAL(y)[0] - REAL(y)[n - 1] * REAL(x)[0];
     ret = ret >= 0 ? ret : -ret; // abs
     return ScalarReal(0.5 * ret);
 }
@@ -27,13 +29,14 @@ extern "C" SEXP R_alpha_count(SEXP file, SEXP seq_min, SEXP seq_max, SEXP verbos
 {
     if (TYPEOF(file) != STRSXP) {
         Rf_error("Input is not a character vector");
+        return R_NilValue;
     }
     const char *fileChar = R_CHAR(STRING_ELT(file, 0));
     FILE *fastaFile = fopen(fileChar, "r");
     if (fastaFile == NULL)
     {
         Rf_error("File not found");
-        return R_NilValue;  
+        return R_NilValue;
     }
     char line[2048];
     int letterCount[26] = {0};  // Assuming only uppercase letters, adjust if needed

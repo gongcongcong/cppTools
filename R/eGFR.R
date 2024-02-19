@@ -25,7 +25,7 @@
 #'
 eGFR <- function(Pcr, Age, Sex, Units = c("mg/dL", "umol/L")) {
         Sex <- ifelse(Sex == "Female", 0.742, 1.0)
-        Units <- ifelse(Units == "mg/dL", 1, 2)
-        ret <- .C(R_eGFR, as.double(Pcr), as.double(Age), as.double(Sex), as.integer(length(Pcr)), egfr =  double(length(Pcr)), as.integer(Units))
+        Units <- match.arg(Units)
+        ret <- .C(R_eGFR, as.double(Pcr), as.double(Age), as.double(Sex), as.integer(length(Pcr)), egfr =  double(length(Pcr)), as.character(Units))
         ret$egfr
 }

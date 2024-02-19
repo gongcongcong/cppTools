@@ -4,7 +4,7 @@
 \alias{matrix_test}
 \title{matrix_test}
 \usage{
-matrix_test(n)
+matrix_test(dat, group = "group", chisq_test = FALSE, test = auto_test)
 }
 \description{
 matrix_test
