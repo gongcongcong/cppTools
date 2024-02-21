@@ -4,6 +4,10 @@
 #' 
 #' @param x x axis 
 #' @param y y axis
+#' @examples 
+#' x <- c(2, 4, 6, 2)
+#' y <- c(4, 4, 1, 4)
+#' area_shoelace(x, y)
 #' @export 
 
 area_shoelace <- function(x, y) {

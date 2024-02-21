@@ -14,3 +14,8 @@ area_shoelace(x, y)
 \description{
 area_shoelace computes the area under a curve using the shoelace formula.
 }
+\examples{
+x <- c(2, 4, 6, 2)
+y <- c(4, 4, 1, 4)
+area_shoelace(x, y)
+}
