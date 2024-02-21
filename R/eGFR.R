@@ -20,7 +20,7 @@
 #'  egfr <- eGFR(pcr, age, sex, Units = "mg/dL")
 #'  egfr2 <- 186 * (pcr^(-1.154)) * (age^(-0.203)) * 1.227 * sex_f
 #'  all.equal(egfr, egfr2)
-# @export
+#' @export
 #'
 eGFR <- function(Pcr, Age, Sex, Units = c("mg/dL", "umol/L")) {
         Sex <- ifelse(Sex == "Female", 0.742, 1.0)

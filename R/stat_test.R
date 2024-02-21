@@ -1,9 +1,30 @@
 #' @title matrix_test
 #' @importFrom data.table rbindlist
+#' @examples
+#' #example 1
+#' n <- 1e2
+#' dat <- data.frame(
+#'      Group = LETTERS[1:10] |> rep(each = 10),
+#'      GLD = rnorm(n, 3, 2),
+#'      WOJ = rpois(n, 3),
+#'      WOK = rnorm(n, 2, 4)
+#'      )
+#' matrix_test(dat, group = "Group")
+#'
+#' #example 2
+#' dat <- data.frame(
+#'      Type = LETTERS[1:10] |> rep(each = 10),
+#'      Smoking = rpois(n, 2),
+#'      nonSmoking = rpois(n, 5)
+#'      ) |>
+#'      aggregate(. ~ Type, data = _, sum)
+#'
+#' matrix_test(dat, group = "Type", chisq_test = TRUE)
 #' @export
 #'
 
 matrix_test <- function(dat, group = "group", chisq_test = FALSE, test = auto_test) {
+        stopifnot("group is not the colname of dat!" = group %in% names(dat))
         names(dat)[which(names(dat) == group)] <- "group"
         dat$group <- as.factor(dat$group)
         groups_levels <- dat$group |> levels()
@@ -14,7 +35,7 @@ matrix_test <- function(dat, group = "group", chisq_test = FALSE, test = auto_te
                 apply(compare_groups, 1, \(x) {
                         a <- groups_levels[x[[1]]]
                         b <- groups_levels[x[[2]]]
-                        ret_tmp <- dat[group %in% c(a, b), !(names(dat) %in% c("group"))] |>
+                        ret_tmp <- dat[dat$group %in% c(a, b), !(names(dat) %in% c("group"))] |>
                                 data.frame(row.names = c(a, b)) |>
                                 as.matrix() |>
                                 auto_test(y = NULL)
@@ -27,7 +48,7 @@ matrix_test <- function(dat, group = "group", chisq_test = FALSE, test = auto_te
                                 statistic = ret_tmp$statistic
                         ))
                 }) |>
-                        rbindlist()
+                        rbindlist(fill = TRUE)
         } else {
                 apply(compare_groups, 1, \(x) {
                         a <- groups_levels[x[[1]]]
@@ -86,6 +107,7 @@ auto_test <- function(x, y, paired = FALSE) {
         } else {
                  # 如果有一个或两个样本不是正态分布，则使用 Wilcoxon signed-rank test
                 result <- wilcox.test(x, y, paired = paired)
+                result$parameter <- NA_real_
         }
         return(result)
 }

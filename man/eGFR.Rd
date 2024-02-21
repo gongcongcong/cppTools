@@ -7,19 +7,19 @@
 eGFR(Pcr, Age, Sex, Units = c("mg/dL", "umol/L"))
 }
 \arguments{
-\item{Pcr}{NumericVector - Serum creatinine levels.}
+\item{Pcr}{Serum creatinine levels.}
 
-\item{Age}{NumericVector - Age of the individual. Units is year}
+\item{Age}{Age of the individual. Units is year}
 
-\item{Sex}{IntegerVector - Gender information}
+\item{Sex}{Gender information}
 
-\item{Pcr_units}{TRUE means units is mg/dL. if the units is umol/L should set the parameter `Pcr_units` to FALSE}
+\item{Units}{mg/dL or umol/L}
 }
 \description{
 Calculate eGFR (estimated Glomerular Filtration Rate) based on input parameters
-calculate the eGFR using the following formula:
-\eqn{
-eGFR(ml/min\ per\ 1.73 m^2) = 186 * Pcr^{-1.154}( mg/dl) * age^{-0.203}(year) * 1.227 * 0.742\ (if\ female)
+calculate the eGFR using the following formula modified for Chinese:
+\deqn{
+eGFR(ml/min\ per\ 1.73 m^2) = 186 \times Pcr^{-1.154}( mg/dl) \times age^{-0.203}(year) \times 1.227 \times 0.742 (if\ female)
 }
 \cite{Ma, Y. et.al (2006). Modified glomerular filtration rate estimating equation for Chinese patients with chronic kidney disease. Journal of the American Society of Nephrology, 17(10), 2937-2944.}
 }
@@ -29,8 +29,7 @@ eGFR(ml/min\ per\ 1.73 m^2) = 186 * Pcr^{-1.154}( mg/dl) * age^{-0.203}(year) * 
  age <- runif(n, 40, 70)
  sex <- sample(c(0L, 1L), n, TRUE) |> factor(labels = c("Female", "Male"))
  sex_f <- ifelse(sex == "Female", 0.742, 1)
- egfr <- eGFR(pcr, age, sex, Pcr_units = TRUE)
+ egfr <- eGFR(pcr, age, sex, Units = "mg/dL")
  egfr2 <- 186 * (pcr^(-1.154)) * (age^(-0.203)) * 1.227 * sex_f
  all.equal(egfr, egfr2)
-
 }

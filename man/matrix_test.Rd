@@ -9,3 +9,24 @@ matrix_test(dat, group = "group", chisq_test = FALSE, test = auto_test)
 \description{
 matrix_test
 }
+\examples{
+#example 1
+n <- 1e2
+dat <- data.frame(
+     Group = LETTERS[1:10] |> rep(each = 10),
+     GLD = rnorm(n, 3, 2),
+     WOJ = rpois(n, 3),
+     WOK = rnorm(n, 2, 4)
+     )
+matrix_test(dat, group = "Group")
+
+#example 2
+dat <- data.frame(
+     Type = LETTERS[1:10] |> rep(each = 10),
+     Smoking = rpois(n, 2),
+     nonSmoking = rpois(n, 5)
+     ) |>
+     aggregate(. ~ Type, data = _, sum)
+
+matrix_test(dat, group = "Type", chisq_test = TRUE)
+}
