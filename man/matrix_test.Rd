@@ -11,22 +11,27 @@ matrix_test
 }
 \examples{
 #example 1
-n <- 1e2
+n <- 1e3
 dat <- data.frame(
-     Group = LETTERS[1:10] |> rep(each = 10),
+     Group = paste0("Group_", 1:100) |> rep(each = 10),
      GLD = rnorm(n, 3, 2),
      WOJ = rpois(n, 3),
      WOK = rnorm(n, 2, 4)
      )
-matrix_test(dat, group = "Group")
+suppressWarnings(
+        ret1 <- prof_check(matrix_test, dat, group = "Group")
+        )
+ret1
 
 #example 2
 dat <- data.frame(
-     Type = LETTERS[1:10] |> rep(each = 10),
+     Type = paste0("Group_", 1:100) |> rep(each = 10),
      Smoking = rpois(n, 2),
      nonSmoking = rpois(n, 5)
      ) |>
      aggregate(. ~ Type, data = _, sum)
 
-matrix_test(dat, group = "Type", chisq_test = TRUE)
+ret2 <- prof_check(matrix_test, dat, group = "Type", chisq_test = TRUE)
+ret2
+
 }

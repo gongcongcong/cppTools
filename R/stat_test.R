@@ -2,24 +2,29 @@
 #' @importFrom data.table rbindlist
 #' @examples
 #' #example 1
-#' n <- 1e2
+#' n <- 1e3
 #' dat <- data.frame(
-#'      Group = LETTERS[1:10] |> rep(each = 10),
+#'      Group = paste0("Group_", 1:100) |> rep(each = 10),
 #'      GLD = rnorm(n, 3, 2),
 #'      WOJ = rpois(n, 3),
 #'      WOK = rnorm(n, 2, 4)
 #'      )
-#' matrix_test(dat, group = "Group")
+#' suppressWarnings(
+#'         ret1 <- prof_check(matrix_test, dat, group = "Group")
+#'         )
+#' ret1
 #'
 #' #example 2
 #' dat <- data.frame(
-#'      Type = LETTERS[1:10] |> rep(each = 10),
+#'      Type = paste0("Group_", 1:100) |> rep(each = 10),
 #'      Smoking = rpois(n, 2),
 #'      nonSmoking = rpois(n, 5)
 #'      ) |>
 #'      aggregate(. ~ Type, data = _, sum)
 #'
-#' matrix_test(dat, group = "Type", chisq_test = TRUE)
+#' ret2 <- prof_check(matrix_test, dat, group = "Type", chisq_test = TRUE)
+#' ret2
+#'
 #' @export
 #'
 
@@ -31,7 +36,7 @@ matrix_test <- function(dat, group = "group", chisq_test = FALSE, test = auto_te
         compare_groups <- seq_along(groups_levels) |>
                 combn(m = 2) |> t()
         if (chisq_test) {
-                stopifnot("dat 需要为三列" = ncol(dat) == 3)
+                # stopifnot("dat 需要为三列" = ncol(dat) == 3)
                 apply(compare_groups, 1, \(x) {
                         a <- groups_levels[x[[1]]]
                         b <- groups_levels[x[[2]]]
@@ -87,7 +92,7 @@ matrix_test <- function(dat, group = "group", chisq_test = FALSE, test = auto_te
 auto_test <- function(x, y, paired = FALSE) {
         # 判断是否使用chisq test
         if ((missing(y) | is.null(y)) & is.matrix(x)) {
-                stopifnot("x 需要为2 X 2 的矩阵方可进行卡方检验" = nrow(x) == ncol(x) & nrow(x) == 2)
+                # stopifnot("x 需要为2 X 2 的矩阵方可进行卡方检验" = nrow(x) == ncol(x) & nrow(x) == 2)
                 return(chisq.test(x))
         }
         # 使用 Shapiro-Wilk 检验检查正态性

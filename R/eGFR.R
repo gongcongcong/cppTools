@@ -17,12 +17,12 @@
 #'  age <- runif(n, 40, 70)
 #'  sex <- sample(c(0L, 1L), n, TRUE) |> factor(labels = c("Female", "Male"))
 #'  sex_f <- ifelse(sex == "Female", 0.742, 1)
-#'  egfr <- eGFR(pcr, age, sex, Units = "mg/dL")
+#'  egfr <- prof_check(eGFR, pcr, age, sex, Units = "mg/dL")
 #'  egfr2 <- 186 * (pcr^(-1.154)) * (age^(-0.203)) * 1.227 * sex_f
 #'  all.equal(egfr, egfr2)
 #' @export
 #'
-eGFR <- function(Pcr, Age, Sex, Units = c("mg/dL", "umol/L")) {
+eGFR <- function(Pcr = numeric(), Age = numeric(), Sex = factor(), Units = c("mg/dL", "umol/L")) {
         Sex <- ifelse(Sex == "Female", 0.742, 1.0)
         Units <- match.arg(Units)
         ret <- .C(R_eGFR, as.double(Pcr), as.double(Age), as.double(Sex), as.integer(length(Pcr)), egfr =  double(length(Pcr)), as.character(Units))

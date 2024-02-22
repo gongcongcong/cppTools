@@ -4,7 +4,12 @@
 \alias{eGFR}
 \title{eGFR}
 \usage{
-eGFR(Pcr, Age, Sex, Units = c("mg/dL", "umol/L"))
+eGFR(
+  Pcr = numeric(),
+  Age = numeric(),
+  Sex = factor(),
+  Units = c("mg/dL", "umol/L")
+)
 }
 \arguments{
 \item{Pcr}{Serum creatinine levels.}
@@ -29,7 +34,7 @@ eGFR(ml/min\ per\ 1.73 m^2) = 186 \times Pcr^{-1.154}( mg/dl) \times age^{-0.203
  age <- runif(n, 40, 70)
  sex <- sample(c(0L, 1L), n, TRUE) |> factor(labels = c("Female", "Male"))
  sex_f <- ifelse(sex == "Female", 0.742, 1)
- egfr <- eGFR(pcr, age, sex, Units = "mg/dL")
+ egfr <- prof_check(eGFR, pcr, age, sex, Units = "mg/dL")
  egfr2 <- 186 * (pcr^(-1.154)) * (age^(-0.203)) * 1.227 * sex_f
  all.equal(egfr, egfr2)
 }
