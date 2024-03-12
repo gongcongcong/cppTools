@@ -44,6 +44,7 @@ alpha_count <- function(file, seq_min = 0, seq_max, verbose = FALSE, simple = TR
 #'
 #' @param fun function used to check
 #' @param  args to the function
+#' @importFrom utils Rprof
 #' @examples
 #'
 #'   n <- 1e3
@@ -60,6 +61,7 @@ prof_check <- function(fun, ...) {
     tmp <- tempfile()
     on.exit(unlink(tmp))
 
+
     # 开始性能分析，设置 filter.callframes 参数为 TRUE
     Rprof(tmp, memory.profiling = TRUE, filter.callframes = TRUE,
           line.profiling = TRUE)
@@ -70,9 +72,31 @@ prof_check <- function(fun, ...) {
     # 停止性能分析
     Rprof(NULL)
 
+
     # 分析结果
-    print(summaryRprof(tmp, memory = "both"))
+    prof_data <- summaryRprof(tmp, memory = "both")
+
+    # 输出性能分析结果
+    cat("Performance analysis:\n")
+    print(prof_data)
+
     invisible(ret)
 }
 
 
+#' showProgress
+#'
+#' show the progression of the implement
+#'
+#' @examples
+#'
+#' showProgress(0.82, "0.82")
+#'
+#' @export
+#'
+
+showProgress <- function(percentage, value) {
+    invisible(
+        .C("printProgress", as.numeric(percentage), as.character(value))
+    )
+}

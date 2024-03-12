@@ -21,6 +21,6 @@ typedef struct
 
 ListElement fGetListElement(SEXP list, const char *str);
 
-extern "C" void printProgress(double percentage, char *var);
+extern "C" void printProgress(double *percentage, char **var);
 #endif
 

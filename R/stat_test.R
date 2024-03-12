@@ -29,6 +29,7 @@
 #'
 
 matrix_test <- function(dat, group = "group", chisq_test = FALSE, test = auto_test) {
+        dat <- as.data.frame(dat)
         stopifnot("group is not the colname of dat!" = group %in% names(dat))
         names(dat)[which(names(dat) == group)] <- "group"
         dat$group <- as.factor(dat$group)
@@ -61,14 +62,18 @@ matrix_test <- function(dat, group = "group", chisq_test = FALSE, test = auto_te
                         lapply(dat[, !(names(dat) %in% c("group"))], \(y) {
                                 vecX <- y[dat$group == a]
                                 vecY <- y[dat$group == b]
-                                ret_tmp <- test(vecX, vecY)
+                                ret_tmp <- zero_or_value(test(vecX, vecY), zero = NULL)
+                                if (length(ret_tmp) == 1) {
+                                        ret_tmp <- paste0(a, " vs. ", b, ret_tmp)
+                                        message(ret_tmp)
+                                }
                                 return(list(
                                         x = a,
                                         y = b,
-                                        p = ret_tmp$p.value,
-                                        method = ret_tmp$method,
-                                        df = ret_tmp$parameter,
-                                        statistic = ret_tmp$statistic,
+                                        p = ret_tmp$p.value |> zero_or_value(),
+                                        method = ret_tmp$method |> zero_or_value(zero = NULL),
+                                        df = ret_tmp$parameter |> zero_or_value(),
+                                        statistic = ret_tmp$statistic |> zero_or_value(),
                                         mean_x = mean(vecX, na.rm = TRUE),
                                         sd_x = sd(vecX, na.rm = TRUE),
                                         mean_y = mean(vecY, na.rm = TRUE),
@@ -79,8 +84,6 @@ matrix_test <- function(dat, group = "group", chisq_test = FALSE, test = auto_te
                         unlist(recursive = FALSE) |>
                         rbindlist(idcol = TRUE, fill = TRUE)
         }
-
-
 }
 
 #' auto_test
@@ -94,6 +97,10 @@ auto_test <- function(x, y, paired = FALSE) {
         if ((missing(y) | is.null(y)) & is.matrix(x)) {
                 # stopifnot("x 需要为2 X 2 的矩阵方可进行卡方检验" = nrow(x) == ncol(x) & nrow(x) == 2)
                 return(chisq.test(x))
+        }
+        if (all(x[1] == x) | all(y[1] == y)) {
+                message("值都一样")
+                return(0)
         }
         # 使用 Shapiro-Wilk 检验检查正态性
         shapiro_test_x <- shapiro.test(x)

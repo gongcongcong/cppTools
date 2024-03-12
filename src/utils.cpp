@@ -5,14 +5,16 @@
 
 #define R_NO_REMAP
 
-extern "C" void printProgress(double percentage, char *var) {
-        double val = percentage * 100.0;
-        int lpad = (int) (percentage * PBWIDTH);
+extern "C" void printProgress(double *percentage, char **var) {
+        // printf("%f", *percentage);
+        double val = *percentage * 100.0;
+        // printf("%f", val);
+        int lpad = (int) (*percentage * PBWIDTH);
         int rpad = PBWIDTH - lpad;
-        if (strcmp(var, "") == 0) {
-                var = (char *)"*";
+        if (strcmp(*var, "") == 0) {
+                var = (char **)"*";
         }
-        printf("\r%2.2f%% (%s) [%.*s%*s]", val, var, lpad, PBSTR, rpad, "");
+        printf("\r%2.2f%% (%s) [%.*s%*s]", val, *var, lpad, PBSTR, rpad, "");
         fflush(stdout);
 }
 
