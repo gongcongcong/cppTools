@@ -6,17 +6,17 @@
 #define R_NO_REMAP
 
 extern "C" void printProgress(double *percentage, char **var) {
-        // printf("%f", *percentage);
         double val = *percentage * 100.0;
-        // printf("%f", val);
-        int lpad = (int) (*percentage * PBWIDTH);
+        int lpad = (int)(*percentage * PBWIDTH);
         int rpad = PBWIDTH - lpad;
-        if (strcmp(*var, "") == 0) {
-                var = (char **)"*";
-        }
-        printf("\r%2.2f%% (%s) [%.*s%*s]", val, *var, lpad, PBSTR, rpad, "");
+
+        // Ensure var is not NULL before dereferencing
+        const char *label = (*var != NULL) ? *var : "*";
+
+        printf("\r%2.2f%% (%s) [%.*s%*s]", val, label, lpad, PBSTR, rpad, "");
         fflush(stdout);
 }
+
 
 ListElement fGetListElement(SEXP list, const char *str) {
         SEXP rsexpElement = R_NilValue;
