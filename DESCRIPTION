@@ -1,0 +1,17 @@
+Package: cppTools
+Type: Package
+Title: Tools by gcc
+Version: 0.0.2
+Date: 2023-11-30
+Author: Congcong Gong
+Maintainer: Congcong Gong <congconggong@email.com>
+Description: self scripts.
+License: GPL (>= 2)
+RoxygenNote: 7.2.3
+Suggests: 
+    testthat (>= 3.0.0)
+Depands:
+    R (>= 4.3.0)
+    data.table
+Config/testthat/edition: 3
+Encoding: UTF-8

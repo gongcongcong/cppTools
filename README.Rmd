@@ -1,0 +1,83 @@
+---
+title: "Calculate the alpha frequency from a fasta file"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+Sys.setenv("_R_USE_PIPEBIND_" = TRUE)
+```
+
+## Calculate the Amino Acids Frequency From the Human Protein Sequence
+
+```{r cars}
+library(cppTools)
+```
+
+The Amino Acids Frequency can be calculated using the alpha_count function.
+
+```{r}
+system.time(
+dfExAAsForHuman <- alpha_count(r"(GCF_000001405.40_GRCh38.p14_protein.faa)",
+            seq_min = 100, 
+            seq_max = 2000,
+            verbose = F, simple = F
+            )
+)
+
+```
+
+```{r}
+dfExAAsForHuman |> 
+        d=>d[order(-d$Freq), ] |> 
+        knitr::kable()
+```
+
+
+This function can yield the same results as the following code but in a faster and more convenient manner.
+
+```{bash engine.path = "D:/program/Git/bin/bash.exe"}
+time seqkit.exe seq -g -j 12 -s -m 100 -M 2000 'GCF_000001405.40_GRCh38.p14_protein.faa'|perl -lne 'foreach(split //){$count{$_}++ if /\w/;} END {print "$_:$count{$_}" for sort {$count{$b} <=> $count{$a}} keys %count;}'
+```
+
+
+
+
+Through comparative analysis, we observed that the differences in results are not substantial when removing proteins with lengths greater than 2000, greater than 3000, less than 100 or greater than 2000, and less than 100 or greater than 3000 (see the table below).
+
+```{r}
+vecSeqMin <- c(100, 100, 0, 0)
+vecSeqMax <- c(3000, 2000, 2000, 3000)
+vecDFNames <- paste0("min_", vecSeqMin, "-max_", vecSeqMax)
+dfAAsFreq <- purrr::pmap(list(vecSeqMin, vecSeqMax), \(.x, .y) {
+        alpha_count(r"(GCF_000001405.40_GRCh38.p14_protein.faa)",
+            seq_min = .x, 
+            seq_max = .y,
+            verbose = F, simple = F
+            )$Prop |> 
+        d=>d*100 
+}) |> as.data.frame() |> 
+        `names<-`(vecDFNames)
+rownames(dfAAsFreq) <- cppTools:::.vecAminoAcids
+dfAAsFreq[order(-dfAAsFreq$`min_100-max_2000`), ] |> 
+        knitr::kable(caption = "Table. ExAAs for Humans (GRCh38) Based on Various Sequence Length Cutoff Thresholds")
+```
+
+
+```{r, fig.asp=0.3, dev="pdf", dpi=600}
+suppressPackageStartupMessages(
+        {
+                library(ComplexHeatmap)
+        }
+) |> 
+        suppressWarnings()
+dfAAsFreq |> 
+        as.matrix() |> t() |> 
+        Heatmap3D(
+                #rect_gp = gpar(col = "white", lwd = 2),
+                col = circlize::colorRamp2(c(0, 5, 10), c("darkgreen", "orange", "darkred")),
+                name = "Prop (%)", column_names_rot = 0
+                )
+
+```
+
