@@ -64,7 +64,7 @@ dfAAsFreq[order(-dfAAsFreq$`min_100-max_2000`), ] |>
 ```
 
 
-```{r, fig.asp=0.3, dev="pdf", dpi=600}
+```{r, fig.asp=0.3, dpi=600}
 suppressPackageStartupMessages(
         {
                 library(ComplexHeatmap)

@@ -21,7 +21,7 @@ dfExAAsForHuman <- alpha_count(r"(GCF_000001405.40_GRCh38.p14_protein.faa)",
 ```
 
     ## 用户 系统 流逝 
-    ## 0.32 0.08 0.41
+    ## 0.36 0.08 0.42
 
 ``` r
 dfExAAsForHuman |> 
@@ -82,8 +82,8 @@ time seqkit.exe seq -g -j 12 -s -m 100 -M 2000 'GCF_000001405.40_GRCh38.p14_prot
     ## U:79
     ## X:26
     ## 
-    ## real 0m19.564s
-    ## user 0m18.843s
+    ## real 0m19.972s
+    ## user 0m19.093s
     ## sys  0m0.062s
 
 Through comparative analysis, we observed that the differences in
@@ -151,4 +151,4 @@ dfAAsFreq |>
                 )
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-5-1.pdf)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
