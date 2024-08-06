@@ -4,21 +4,16 @@
 \alias{eGFR}
 \title{eGFR}
 \usage{
-eGFR(
-  Pcr = numeric(),
-  Age = numeric(),
-  Sex = factor(),
-  Units = c("mg/dL", "umol/L")
-)
+eGFR(pcr, age, sex, Units = c("mg/dL", "umol/L"))
 }
 \arguments{
+\item{Units}{mg/dL or umol/L}
+
 \item{Pcr}{Serum creatinine levels.}
 
 \item{Age}{Age of the individual. Units is year}
 
 \item{Sex}{Gender information}
-
-\item{Units}{mg/dL or umol/L}
 }
 \description{
 Calculate eGFR (estimated Glomerular Filtration Rate) based on input parameters

@@ -22,9 +22,8 @@
 #'  all.equal(egfr, egfr2)
 #' @export
 #'
-eGFR <- function(Pcr = numeric(), Age = numeric(), Sex = factor(), Units = c("mg/dL", "umol/L")) {
-        Sex <- ifelse(Sex == "Female", 0.742, 1.0)
-        Units <- match.arg(Units)
-        ret <- .C(R_eGFR, as.double(Pcr), as.double(Age), as.double(Sex), as.integer(length(Pcr)), egfr =  double(length(Pcr)), as.character(Units))
-        ret$egfr
+eGFR <- function(pcr, age, sex, Units = c("mg/dL", "umol/L")) {
+        sex <- ifelse(sex == "Female", 0.742, 1.0)
+        unit <- match.arg(Units)
+        .Call("R_eGFR", pcr = as.numeric(pcr), age = as.numeric(age), sex = as.numeric(sex), unit = as.character(unit))
 }
