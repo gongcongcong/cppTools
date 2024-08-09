@@ -90,3 +90,5 @@ extern "C" SEXP R_alpha_count(SEXP file, SEXP seq_min, SEXP seq_max, SEXP verbos
     return res;
 }
 
+
+

@@ -39,3 +39,13 @@ zero_or_value <- function(expre, zero = NA_real_, verbose = FALSE) {
 error_to_character <- function(e) {
         return(conditionMessage(e))
 }
+
+
+#' calculate mode
+#'
+#' @param x numeric vector
+#' @export
+#'
+identify_mode <- function(x) {
+        .Call("R_mode", x)
+}
