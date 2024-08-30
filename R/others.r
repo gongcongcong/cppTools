@@ -83,7 +83,7 @@ alpha_count <- function(file, seq_min = 0, seq_max, verbose = FALSE, simple = TR
 #' pcr <- rnorm(n, 50, 3)
 #' age <- runif(n, 40, 70)
 #' sex <- sample(c(0L, 1L), n, TRUE) |> factor(labels = c("Female", "Male"))
-#' prof_check(eGFR, pcr, age, sex, "mg/dL")
+#' #prof_check(eGFR, pcr, age, sex, "mg/dL")
 #'
 #' @return The result of the profiled function call (invisibly).
 #' @export
