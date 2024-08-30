@@ -12,6 +12,8 @@ delete_files(folder_path, num_to_delete, interval_sec, show_more)
 \item{num_to_delete}{The number of files/folders to delete at each interval.}
 
 \item{interval_sec}{The interval in seconds between each delete operation.}
+
+\item{show_more}{show more information of the deleted files.}
 }
 \value{
 None.

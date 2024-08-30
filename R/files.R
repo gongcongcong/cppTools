@@ -6,6 +6,7 @@
 #' @param folder_path The path to the folder to delete contents from.
 #' @param num_to_delete The number of files/folders to delete at each interval.
 #' @param interval_sec The interval in seconds between each delete operation.
+#' @param show_more show more information of the deleted files.
 #' @return None.
 #' @export
 delete_files <- function(folder_path, num_to_delete, interval_sec, show_more) {
