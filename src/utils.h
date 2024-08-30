@@ -2,8 +2,6 @@
 #define UTILS_H
 #include <Rinternals.h>
 
-#define PBSTR ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
-#define PBWIDTH 60
 
 typedef struct
 {

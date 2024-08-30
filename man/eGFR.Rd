@@ -2,34 +2,47 @@
 % Please edit documentation in R/eGFR.R
 \name{eGFR}
 \alias{eGFR}
-\title{eGFR}
+\title{Calculate eGFR (Estimated Glomerular Filtration Rate)}
 \usage{
 eGFR(pcr, age, sex, Units = c("mg/dL", "umol/L"))
 }
 \arguments{
-\item{Units}{mg/dL or umol/L}
+\item{pcr}{Numeric vector representing serum creatinine levels. The unit is specified by \code{Units}.}
 
-\item{Pcr}{Serum creatinine levels.}
+\item{age}{Numeric vector representing the age of the individual(s) in years.}
 
-\item{Age}{Age of the individual. Units is year}
+\item{sex}{Character vector representing the sex of the individual(s). Accepted values are "Male" or "Female".}
 
-\item{Sex}{Gender information}
+\item{Units}{Character; specifies the unit of serum creatinine levels. Accepted values are "mg/dL" or "umol/L".}
+}
+\value{
+A numeric vector of eGFR values (ml/min per 1.73 m^2).
 }
 \description{
-Calculate eGFR (estimated Glomerular Filtration Rate) based on input parameters
-calculate the eGFR using the following formula modified for Chinese:
-\deqn{
-eGFR(ml/min\ per\ 1.73 m^2) = 186 \times Pcr^{-1.154}( mg/dl) \times age^{-0.203}(year) \times 1.227 \times 0.742 (if\ female)
+Calculates the estimated Glomerular Filtration Rate (eGFR) based on serum creatinine levels, age, sex, and units (mg/dL or umol/L).
+The formula is modified specifically for Chinese patients based on the research by Ma et al. (2006).
 }
-\cite{Ma, Y. et.al (2006). Modified glomerular filtration rate estimating equation for Chinese patients with chronic kidney disease. Journal of the American Society of Nephrology, 17(10), 2937-2944.}
+\details{
+The eGFR is an important measure of kidney function. This function calculates eGFR using a formula that is specifically modified for Chinese patients:
+\deqn{
+eGFR(ml/min\ per\ 1.73 m^2) = 186 \times Pcr^{-1.154} \times Age^{-0.203} \times 1.227 \times 0.742 (if\ female)
+}
+The function accepts serum creatinine levels (\code{Pcr}), age, sex, and the units of creatinine measurement (mg/dL or umol/L). The formula is adjusted for sex, multiplying by 0.742 for females.
+}
+\note{
+If the units are specified as "umol/L", the function converts these to "mg/dL" before applying the formula. The conversion is done using the factor 1 mg/dL = 88.4 umol/L.
 }
 \examples{
- n <- 1e3
- pcr <- rnorm(n, 50, 3)
- age <- runif(n, 40, 70)
- sex <- sample(c(0L, 1L), n, TRUE) |> factor(labels = c("Female", "Male"))
- sex_f <- ifelse(sex == "Female", 0.742, 1)
- egfr <- prof_check(eGFR, pcr, age, sex, Units = "mg/dL")
- egfr2 <- 186 * (pcr^(-1.154)) * (age^(-0.203)) * 1.227 * sex_f
- all.equal(egfr, egfr2)
+# Example usage:
+n <- 1e3
+pcr <- rnorm(n, 50, 3)
+age <- runif(n, 40, 70)
+sex <- sample(c("Female", "Male"), n, TRUE)
+egfr <- eGFR(pcr, age, sex, Units = "mg/dL")
+egfr2 <- 186 * (pcr^(-1.154)) * (age^(-0.203)) * 1.227 * ifelse(sex == "Female", 0.742, 1)
+all.equal(egfr, egfr2)
+
+}
+\references{
+Ma, Y. et al. (2006). Modified glomerular filtration rate estimating equation for Chinese patients with chronic kidney disease. Journal of the American Society of Nephrology, 17(10), 2937-2944.
 }

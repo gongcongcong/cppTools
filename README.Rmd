@@ -18,19 +18,18 @@ The Amino Acids Frequency can be calculated using the alpha_count function.
 
 ```{r}
 system.time(
-dfExAAsForHuman <- alpha_count(r"(GCF_000001405.40_GRCh38.p14_protein.faa)",
-            seq_min = 100, 
-            seq_max = 2000,
-            verbose = F, simple = F
-            )
+  dfExAAsForHuman <- alpha_count(r"(GCF_000001405.40_GRCh38.p14_protein.faa)",
+    seq_min = 100,
+    seq_max = 2000,
+    verbose = F, simple = F
+  )
 )
-
 ```
 
 ```{r}
-dfExAAsForHuman |> 
-        d=>d[order(-d$Freq), ] |> 
-        knitr::kable()
+dfExAAsForHuman |>
+  d=>d[order(-d$Freq), ] |>
+  knitr::kable()
 ```
 
 
@@ -50,34 +49,33 @@ vecSeqMin <- c(100, 100, 0, 0)
 vecSeqMax <- c(3000, 2000, 2000, 3000)
 vecDFNames <- paste0("min_", vecSeqMin, "-max_", vecSeqMax)
 dfAAsFreq <- purrr::pmap(list(vecSeqMin, vecSeqMax), \(.x, .y) {
-        alpha_count(r"(GCF_000001405.40_GRCh38.p14_protein.faa)",
-            seq_min = .x, 
-            seq_max = .y,
-            verbose = F, simple = F
-            )$Prop |> 
-        d=>d*100 
-}) |> as.data.frame() |> 
-        `names<-`(vecDFNames)
+  alpha_count(r"(GCF_000001405.40_GRCh38.p14_protein.faa)",
+    seq_min = .x,
+    seq_max = .y,
+    verbose = F, simple = F
+  )$Prop |>
+    d=>d * 100
+}) |>
+  as.data.frame() |>
+  `names<-`(vecDFNames)
 rownames(dfAAsFreq) <- cppTools:::.vecAminoAcids
-dfAAsFreq[order(-dfAAsFreq$`min_100-max_2000`), ] |> 
-        knitr::kable(caption = "Table. ExAAs for Humans (GRCh38) Based on Various Sequence Length Cutoff Thresholds")
+dfAAsFreq[order(-dfAAsFreq$`min_100-max_2000`), ] |>
+  knitr::kable(caption = "Table. ExAAs for Humans (GRCh38) Based on Various Sequence Length Cutoff Thresholds")
 ```
 
 
 ```{r, fig.asp=0.3, dpi=600}
-suppressPackageStartupMessages(
-        {
-                library(ComplexHeatmap)
-        }
-) |> 
-        suppressWarnings()
-dfAAsFreq |> 
-        as.matrix() |> t() |> 
-        Heatmap3D(
-                #rect_gp = gpar(col = "white", lwd = 2),
-                col = circlize::colorRamp2(c(0, 5, 10), c("darkgreen", "orange", "darkred")),
-                name = "Prop (%)", column_names_rot = 0
-                )
-
+suppressPackageStartupMessages({
+  library(ComplexHeatmap)
+}) |>
+  suppressWarnings()
+dfAAsFreq |>
+  as.matrix() |>
+  t() |>
+  Heatmap3D(
+    # rect_gp = gpar(col = "white", lwd = 2),
+    col = circlize::colorRamp2(c(0, 5, 10), c("darkgreen", "orange", "darkred")),
+    name = "Prop (%)", column_names_rot = 0
+  )
 ```
 

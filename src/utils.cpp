@@ -5,14 +5,26 @@
 
 #define R_NO_REMAP
 
+#define PBWIDTH 50
+#define PBSTR "**************************************************" // 确保长度与PBWIDTH匹配
+
 extern "C" void printProgress(double *percentage, char **var) {
+        // 验证输入指针
+        if (percentage == NULL || var == NULL || *var == NULL) {
+                Rprintf("\n[Error] Invalid input to printProgress function.\n");
+                return;
+        }
+
         double val = *percentage * 100.0;
         int lpad = (int)(*percentage * PBWIDTH);
         int rpad = PBWIDTH - lpad;
 
-        // Ensure var is not NULL before dereferencing
-        const char *label = (*var != NULL) ? *var : "*";
+        // 控制 label 长度，确保不超出预期
+        char label[100];
+        strncpy(label, *var, sizeof(label) - 1); // 拷贝字符串并确保结尾是 '\0'
+        label[sizeof(label) - 1] = '\0'; // 确保字符串以 '\0' 结尾
 
+        // 打印进度条
         printf("\r%2.2f%% (%s) [%.*s%*s]", val, label, lpad, PBSTR, rpad, "");
         fflush(stdout);
 }

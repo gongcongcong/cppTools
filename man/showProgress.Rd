@@ -2,15 +2,20 @@
 % Please edit documentation in R/others.r
 \name{showProgress}
 \alias{showProgress}
-\title{showProgress}
+\title{Show Progress}
 \usage{
 showProgress(percentage, value)
 }
+\arguments{
+\item{percentage}{Numeric; the percentage of completion (between 0 and 1).}
+
+\item{value}{Character; a string representing the current progress state.}
+}
 \description{
-show the progression of the implement
+`showProgress` is used to display the progress of a process in the console.
 }
 \examples{
-
-showProgress(0.82, "0.82")
+# Example: Show progress at 82\%
+showProgress(0.82, "82\%")
 
 }

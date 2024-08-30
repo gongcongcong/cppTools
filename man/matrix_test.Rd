@@ -2,37 +2,61 @@
 % Please edit documentation in R/stat_test.R
 \name{matrix_test}
 \alias{matrix_test}
-\title{matrix_test}
+\title{Perform Group-wise Statistical Tests}
 \usage{
 matrix_test(dat, group = "Group", chisq_test = FALSE, test = auto_test)
 }
+\arguments{
+\item{dat}{A data frame containing the data to be tested.}
+
+\item{group}{A character string specifying the name of the column in `dat` that contains the group labels. Default is "Group".}
+
+\item{chisq_test}{Logical; if \code{TRUE}, the function performs a chi-squared test between groups. Default is \code{FALSE}.}
+
+\item{test}{A function specifying the statistical test to use for non-chi-squared tests. Default is \code{auto_test}.}
+}
+\value{
+A data table (if using `data.table::rbindlist`) summarizing the test results, including:
+\itemize{
+  \item \code{x}: The first group in the comparison.
+  \item \code{y}: The second group in the comparison.
+  \item \code{p}: The p-value of the test.
+  \item \code{method}: The method used for the test.
+  \item \code{df}: Degrees of freedom (if applicable).
+  \item \code{statistic}: The test statistic.
+  \item \code{mean_x}: Mean of the first group.
+  \item \code{sd_x}: Standard deviation of the first group.
+  \item \code{mean_y}: Mean of the second group.
+  \item \code{sd_y}: Standard deviation of the second group.
+}
+}
 \description{
-matrix_test
+The `matrix_test` function performs statistical tests between groups in a data frame.
+It can conduct either chi-squared tests (if `chisq_test = TRUE`) or other statistical tests
+provided by the user through the `test` parameter (default is `auto_test`).
 }
 \examples{
-#example 1
+# Example 1
 n <- 1e3
 dat <- data.frame(
-     Group = paste0("Group_", 1:100) |> rep(each = 10),
-     GLD = rnorm(n, 3, 2),
-     WOJ = rpois(n, 3),
-     WOK = rnorm(n, 2, 4)
-     )
+  Group = paste0("Group_", 1:100) |> rep(each = 10),
+  GLD = rnorm(n, 3, 2),
+  WOJ = rpois(n, 3),
+  WOK = rnorm(n, 2, 4)
+)
 suppressWarnings(
-#        ret1 <- prof_check(matrix_test, dat, group = "Group")
-         ret1 <- matrix_test(dat, group = "Group")
-        )
+  ret1 <- matrix_test(dat, group = "Group")
+)
 ret1
 
-#example 2
+# Example 2
 dat <- data.frame(
-     Type = paste0("Group_", 1:100) |> rep(each = 10),
-     Smoking = rpois(n, 2),
-     nonSmoking = rpois(n, 5)
-     ) |>
-     aggregate(. ~ Type, data = _, sum)
+  Type = paste0("Group_", 1:100) |> rep(each = 10),
+  Smoking = rpois(n, 2),
+  nonSmoking = rpois(n, 5)
+) |>
+  aggregate(. ~ Type, data = _, sum)
 
-#ret2 <- prof_check(matrix_test, dat, group = "Type", chisq_test = TRUE)
 ret2 <- matrix_test(dat, group = "Type", chisq_test = TRUE)
 ret2
 }

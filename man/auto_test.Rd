@@ -2,10 +2,47 @@
 % Please edit documentation in R/stat_test.R
 \name{auto_test}
 \alias{auto_test}
-\title{auto_test}
+\title{Perform Automatic Statistical Test}
 \usage{
 auto_test(x, y, paired = FALSE)
 }
+\arguments{
+\item{x}{A numeric vector or a 2x2 matrix. If \code{x} is a matrix, a chi-squared test is performed.}
+
+\item{y}{A numeric vector. This parameter is required unless \code{x} is a matrix.}
+
+\item{paired}{Logical; if \code{TRUE}, indicates that the data are paired.}
+}
+\value{
+The result of the statistical test as an object of class \code{"htest"}.
+If the values in \code{x} or \code{y} are all the same, the function returns \code{0} and prints a message.
+}
 \description{
-Automatically selecting a test analysis (t.test or wilcox.test) to compare two samples based on their distributions.
+This function automatically selects and performs the appropriate statistical test
+based on the input data. It first determines whether to use a chi-squared test
+for a 2x2 matrix. For non-matrix inputs, it checks for normality and chooses
+between a t-test (if both samples are normally distributed) or a Wilcoxon
+signed-rank test (if one or both samples are not normally distributed).
+}
+\details{
+The function performs the following checks:
+\itemize{
+  \item If \code{x} is a 2x2 matrix, a chi-squared test is performed.
+  \item If all values in \code{x} or \code{y} are the same, a message is displayed and \code{0} is returned.
+  \item For numeric vectors, normality is tested using the Shapiro-Wilk test.
+        If both vectors are normally distributed, an independent or paired t-test is performed
+        based on the \code{paired} argument.
+  \item If normality is violated, the Wilcoxon signed-rank test is used.
+}
+}
+\examples{
+# Example usage with a 2x2 matrix for chi-squared test
+matrix_data <- matrix(c(10, 20, 30, 40), nrow = 2)
+auto_test(matrix_data)
+
+# Example usage with numeric vectors
+x <- rnorm(10)
+y <- rnorm(10)
+auto_test(x, y)
+
 }

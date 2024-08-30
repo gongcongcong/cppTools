@@ -2,20 +2,29 @@
 % Please edit documentation in R/others.r
 \name{area_shoelace}
 \alias{area_shoelace}
-\title{area_shoelace}
+\title{Compute Area Using Shoelace Formula}
 \usage{
 area_shoelace(x, y)
 }
 \arguments{
-\item{x}{x axis}
+\item{x}{A numeric vector representing the x-coordinates of the polygon vertices.}
 
-\item{y}{y axis}
+\item{y}{A numeric vector representing the y-coordinates of the polygon vertices.}
+}
+\value{
+A numeric value representing the computed area.
 }
 \description{
-area_shoelace computes the area under a curve using the shoelace formula.
+`area_shoelace` computes the area enclosed by a polygon defined by the points
+(\code{x}, \code{y}) using the shoelace formula (also known as Gauss's area formula).
+}
+\details{
+The shoelace formula calculates the area of a simple polygon whose vertices are described by their Cartesian coordinates in the plane. The vertices must be defined in order, either clockwise or counterclockwise.
 }
 \examples{
+# Example: Compute the area of a triangle
 x <- c(2, 4, 6, 2)
 y <- c(4, 4, 1, 4)
 area_shoelace(x, y)
+
 }

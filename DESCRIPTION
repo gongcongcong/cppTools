@@ -5,14 +5,14 @@ Version: 0.0.2
 Date: 2023-11-30
 Author: Congcong Gong
 Maintainer: Congcong Gong <congconggong@email.com>
-Description: self scripts.
-License: GPL (>= 2)
+Description: A collection of tools and scripts developed by gcc for various computational tasks.
+License: MIT + file LICENSE
 RoxygenNote: 7.3.2
-Suggests: 
-    testthat (>= 3.0.0)
 Depends:
     R (>= 4.3.0)
 Imports:
     data.table
+Suggests: 
+    testthat (>= 3.0.0)
 Config/testthat/edition: 3
 Encoding: UTF-8

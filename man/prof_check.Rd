@@ -2,25 +2,28 @@
 % Please edit documentation in R/others.r
 \name{prof_check}
 \alias{prof_check}
-\title{prof_check}
+\title{Profile a Function's Performance}
 \usage{
 prof_check(fun, ...)
 }
 \arguments{
-\item{fun}{function used to check}
+\item{fun}{A function to be profiled.}
 
-\item{args}{to the function}
+\item{...}{Additional arguments to pass to the function specified in `fun`.}
+}
+\value{
+The result of the profiled function call (invisibly).
 }
 \description{
-check the function
+`prof_check` profiles the performance of a specified function, capturing both
+memory usage and execution time. It utilizes R's built-in `Rprof` tool for profiling.
 }
 \examples{
-
-  n <- 1e3
-  pcr <- rnorm(n, 50, 3)
-  age <- runif(n, 40, 70)
-  sex <- sample(c(0L, 1L), n, TRUE) |> factor(labels = c("Female", "Male"))
-  sex_f <- ifelse(sex == "Female", 0.742, 1)
-  prof_check(eGFR, pcr, age, sex, "mg/dL")
+# Example: Profile the performance of the eGFR function
+n <- 1e3
+pcr <- rnorm(n, 50, 3)
+age <- runif(n, 40, 70)
+sex <- sample(c(0L, 1L), n, TRUE) |> factor(labels = c("Female", "Male"))
+prof_check(eGFR, pcr, age, sex, "mg/dL")
 
 }

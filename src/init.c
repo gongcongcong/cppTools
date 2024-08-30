@@ -7,6 +7,7 @@ SEXP R_shoelace(SEXP x, SEXP y);
 SEXP R_alpha_count(SEXP file, SEXP seq_min, SEXP seq_max, SEXP verbose);
 SEXP R_mode(SEXP x);
 void printProgress(double *percentage, char **var);
+SEXP R_delete_files (SEXP folder_path, SEXP num_to_delete, SEXP interval_sec, SEXP show_more);
 
 static const R_CMethodDef DotCEntries[] = {
         {"printProgress", (DL_FUNC) &printProgress, 2},
@@ -18,6 +19,7 @@ static const R_CallMethodDef CallEntries[] = {
         {"R_alpha_count", (DL_FUNC) &R_alpha_count, 4},
         {"R_eGFR", (DL_FUNC) &R_eGFR, 4},
         {"R_mode", (DL_FUNC) &R_mode, 1},
+        {"R_delete_files", (DL_FUNC) &R_delete_files, 4},
         {NULL, NULL, 0}
 };
 

@@ -11,22 +11,24 @@
 #' zero_or_value(1 + 2) # Returns 3
 #' zero_or_value(1 + "a") # Returns 0 without displaying error message
 #' zero_or_value(1 + "a", zero = NULL)
-
 zero_or_value <- function(expre, zero = NA_real_, verbose = FALSE) {
-        result <- tryCatch({
-                eval(expre)
-        }, error = function(e) {
-                if (verbose) {
-                        message(conditionMessage(e))
-                }
-                if (is.null(zero)) {
-                        return(error_to_character(e))
-                } else {
-                        return(zero)
-                }
-        })
+  result <- tryCatch(
+    {
+      eval(expre)
+    },
+    error = function(e) {
+      if (verbose) {
+        message(conditionMessage(e))
+      }
+      if (is.null(zero)) {
+        return(error_to_character(e))
+      } else {
+        return(zero)
+      }
+    }
+  )
 
-        return(result)
+  return(result)
 }
 
 
@@ -37,7 +39,7 @@ zero_or_value <- function(expre, zero = NA_real_, verbose = FALSE) {
 #' @param e Error object.
 #'
 error_to_character <- function(e) {
-        return(conditionMessage(e))
+  return(conditionMessage(e))
 }
 
 
@@ -47,5 +49,5 @@ error_to_character <- function(e) {
 #' @export
 #'
 identify_mode <- function(x) {
-        .Call("R_mode", x)
+  .Call("R_mode", x)
 }

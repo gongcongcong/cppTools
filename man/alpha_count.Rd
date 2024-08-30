@@ -2,17 +2,36 @@
 % Please edit documentation in R/others.r
 \name{alpha_count}
 \alias{alpha_count}
-\title{alpha_count}
+\title{Count Amino Acid Frequency in a FASTA File}
 \usage{
 alpha_count(file, seq_min = 0, seq_max, verbose = FALSE, simple = TRUE)
 }
 \arguments{
-\item{file}{the path of fasta file}
+\item{file}{A character string representing the path to the FASTA file.}
 
-\item{verbose}{whether print the results}
+\item{seq_min}{An integer specifying the minimum length of sequences to be counted. Default is 0.}
 
-\item{simple}{whether remove the alpha with zero frequency}
+\item{seq_max}{An integer specifying the maximum length of sequences to be counted. Default is \code{1e6}.}
+
+\item{verbose}{Logical; if \code{TRUE}, prints the results to the console. Default is \code{FALSE}.}
+
+\item{simple}{Logical; if \code{TRUE}, removes amino acids with zero frequency from the output. Default is \code{TRUE}.}
+}
+\value{
+If \code{simple = TRUE}, returns a named vector of non-zero frequencies. If \code{simple = FALSE}, returns a data frame with columns:
+\itemize{
+  \item \code{Freq}: Frequency of each amino acid.
+  \item \code{Prop}: Proportion of each amino acid in the file.
+}
 }
 \description{
-count the alpha frequency in a fasta file
+`alpha_count` counts the frequency of amino acids in a given FASTA file, optionally filtering sequences by length and simplifying the output.
+}
+\details{
+This function reads a FASTA file and counts the occurrence of each amino acid. The results can be filtered by sequence length and simplified to exclude zero frequencies.
+}
+\examples{
+# Example: Count amino acids in a FASTA file
+# alpha_count("path/to/your/file.fasta")
+
 }
